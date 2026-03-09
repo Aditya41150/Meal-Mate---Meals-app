@@ -6,15 +6,15 @@ import 'package:meals_app/widgets/meal_item.dart'; // Make sure this import exis
 class MealsScreen extends StatelessWidget {
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFaviourite;
-  final bool Function(Meal meal) isMealFavourite;
+  final void Function(Meal meal) onToggleFavorite;
+  final bool Function(Meal meal) isMealFavorite;
 
   const MealsScreen({
     super.key,
     this.title,
     List<Meal>? meals,
-    required this.onToggleFaviourite,
-    required this.isMealFavourite,
+    required this.onToggleFavorite,
+    required this.isMealFavorite,
   }) : meals = meals ?? const [];
 
   @override
@@ -49,8 +49,8 @@ class MealsScreen extends StatelessWidget {
         itemCount: meals.length,
         itemBuilder: (ctx, index) => MealItem(
           meal: meals[index],
-          onToggleFaviourite: onToggleFaviourite,
-          isFavourite: isMealFavourite(meals[index]),
+          onToggleFavorite: onToggleFavorite,
+          isFavorite: isMealFavorite(meals[index]),
         ),
       );
     }

@@ -17,7 +17,7 @@ class MainDrawer extends StatelessWidget {
                   Theme.of(context).colorScheme.primaryContainer,
                   Theme.of(
                     context,
-                  ).colorScheme.primaryContainer.withOpacity(0.8),
+                  ).colorScheme.primaryContainer.withValues(alpha: 0.8),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -67,7 +67,7 @@ class MainDrawer extends StatelessWidget {
               fontSize: 24,
             ),
             onTap: () {
-              onSelectScreen('Filters');
+              onSelectScreen('filters');
             },
           ),
         ],

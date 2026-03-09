@@ -10,15 +10,15 @@ class MealItem extends StatelessWidget {
   const MealItem({
     super.key,
     required this.meal,
-    required this.onToggleFaviourite,
-    required this.isFavourite,
+    required this.onToggleFavorite,
+    required this.isFavorite,
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFaviourite;
-  final bool isFavourite;
+  final void Function(Meal meal) onToggleFavorite;
+  final bool isFavorite;
 
-  String get ComplexityText {
+  String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
         meal.complexity.name.substring(1);
   }
@@ -44,8 +44,8 @@ class MealItem extends StatelessWidget {
             MaterialPageRoute(
               builder: (ctx) => MealDetailsScreen(
                 meal: meal,
-                onToggleFaviourite: onToggleFaviourite,
-                isFavourite: isFavourite,
+                onToggleFavorite: onToggleFavorite,
+                isFavorite: isFavorite,
               ),
             ),
           );
@@ -94,7 +94,7 @@ class MealItem extends StatelessWidget {
                         ),
 
                         const SizedBox(width: 12),
-                        MealItemTrait(icon: Icons.work, label: ComplexityText),
+                        MealItemTrait(icon: Icons.work, label: complexityText),
                         const SizedBox(width: 12),
                         MealItemTrait(
                           icon: Icons.attach_money,

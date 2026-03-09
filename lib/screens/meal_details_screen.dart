@@ -5,24 +5,24 @@ class MealDetailsScreen extends StatefulWidget {
   const MealDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFaviourite,
-    required this.isFavourite,
+    required this.onToggleFavorite,
+    required this.isFavorite,
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFaviourite;
-  final bool isFavourite;
+  final void Function(Meal meal) onToggleFavorite;
+  final bool isFavorite;
   @override
   State<MealDetailsScreen> createState() => _MealsDetailsState();
 }
 
 class _MealsDetailsState extends State<MealDetailsScreen> {
-  late bool _isFavourite;
+  late bool _isFavorite;
 
   @override
   void initState() {
     super.initState();
-    _isFavourite = widget.isFavourite;
+    _isFavorite = widget.isFavorite;
   }
 
   @override
@@ -33,12 +33,12 @@ class _MealsDetailsState extends State<MealDetailsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              widget.onToggleFaviourite(widget.meal);
+              widget.onToggleFavorite(widget.meal);
               setState(() {
-                _isFavourite = !_isFavourite;
+                _isFavorite = !_isFavorite;
               });
             },
-            icon: Icon(_isFavourite ? Icons.star : Icons.star_border),
+            icon: Icon(_isFavorite ? Icons.star : Icons.star_border),
           ),
         ],
       ),
