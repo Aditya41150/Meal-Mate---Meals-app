@@ -6,25 +6,18 @@ import 'package:meals_app/widgets/meal_item.dart'; // Make sure this import exis
 class MealsScreen extends StatelessWidget {
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
   final bool Function(Meal meal) isMealFavorite;
 
   const MealsScreen({
     super.key,
     this.title,
     List<Meal>? meals,
-    required this.onToggleFavorite,
     required this.isMealFavorite,
   }) : meals = meals ?? const [];
 
   @override
   Widget build(BuildContext context) {
-    Widget content = ListView.builder(
-      itemCount: meals.length,
-      itemBuilder: (context, index) {
-        return ListTile(title: Text(meals[index].title));
-      },
-    );
+    Widget content;
 
     if (meals.isEmpty) {
       content = Center(
@@ -42,14 +35,11 @@ class MealsScreen extends StatelessWidget {
           ],
         ),
       );
-    }
-
-    if (meals.isNotEmpty) {
+    } else {
       content = ListView.builder(
         itemCount: meals.length,
         itemBuilder: (ctx, index) => MealItem(
           meal: meals[index],
-          onToggleFavorite: onToggleFavorite,
           isFavorite: isMealFavorite(meals[index]),
         ),
       );

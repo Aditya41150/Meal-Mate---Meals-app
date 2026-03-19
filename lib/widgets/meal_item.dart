@@ -7,15 +7,9 @@ import 'package:meals_app/widgets/meal_item_trait.dart';
 import '../models/meal.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({
-    super.key,
-    required this.meal,
-    required this.onToggleFavorite,
-    required this.isFavorite,
-  });
+  const MealItem({super.key, required this.meal, required this.isFavorite});
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
   final bool isFavorite;
 
   String get complexityText {
@@ -41,23 +35,19 @@ class MealItem extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (ctx) => MealDetailsScreen(
-                meal: meal,
-                onToggleFavorite: onToggleFavorite,
-                isFavorite: isFavorite,
-              ),
-            ),
+            MaterialPageRoute(builder: (ctx) => MealDetailsScreen(meal: meal)),
           );
         },
         child: Stack(
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              fit: BoxFit.cover,
-              height: 200,
-              width: double.infinity,
+            Hero(
+              tag: meal.id,
+              child: Image(
+                image: NetworkImage(meal.imageUrl),
+                fit: BoxFit.cover,
+                height: 200,
+                width: double.infinity,
+              ),
             ),
 
             Positioned(

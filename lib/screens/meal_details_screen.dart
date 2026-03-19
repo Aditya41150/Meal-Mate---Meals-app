@@ -1,55 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/providers/faviorites_provider.dart';
 
-class MealDetailsScreen extends StatefulWidget {
-  const MealDetailsScreen({
-    super.key,
-    required this.meal,
-    required this.onToggleFavorite,
-    required this.isFavorite,
-  });
+class MealDetailsScreen extends ConsumerWidget {
+  const MealDetailsScreen({super.key, required this.meal});
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
-  final bool isFavorite;
-  @override
-  State<MealDetailsScreen> createState() => _MealsDetailsState();
-}
-
-class _MealsDetailsState extends State<MealDetailsScreen> {
-  late bool _isFavorite;
 
   @override
-  void initState() {
-    super.initState();
-    _isFavorite = widget.isFavorite;
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteState = ref.watch(favoriteMealsProvider).contains(meal);
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.meal.title),
+        title: Text(meal.title),
         actions: [
           IconButton(
             onPressed: () {
-              widget.onToggleFavorite(widget.meal);
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavoriteStatus(meal);
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    wasAdded ? 'Meal Added as a faviourite' : 'Meal Removed',
+                  ),
+                ),
+              );
             },
-            icon: Icon(_isFavorite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(microseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween(begin: 0.5, end: 1.0).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavoriteState ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavoriteState),
+              ),
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              widget.meal.imageUrl,
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                width: double.infinity,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
             ),
             SizedBox(height: 10),
             Text(
@@ -60,7 +67,7 @@ class _MealsDetailsState extends State<MealDetailsScreen> {
               ),
             ),
             SizedBox(height: 20),
-            for (final ingredient in widget.meal.ingredients) Text(ingredient),
+            for (final ingredient in meal.ingredients) Text(ingredient),
 
             SizedBox(height: 20),
             Padding(
@@ -74,7 +81,7 @@ class _MealsDetailsState extends State<MealDetailsScreen> {
                 ),
               ),
             ),
-            for (final step in widget.meal.steps) Text(step),
+            for (final step in meal.steps) Text(step),
           ],
         ),
       ),
